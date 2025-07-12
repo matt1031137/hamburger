@@ -27,10 +27,10 @@
         <div class="cart" :class="isOpen ?'active':''" data-close>
             <p>Brand</p>
             <img v-if="cartContent.brand != ''" class="cart-logo" :src="cartContent.brand" alt="">
-            <span v-else>尚未選擇</span>
+            <span v-else>尚未選擇品牌</span>
             <p>Item</p>
             <div class="maxHeight">
-                <div class="cart-item" v-for="(item,index) in cartContent.items">
+                <div v-if="cartContent.items.length != 0 " class="cart-item" v-for="(item,index) in cartContent.items">
                     <div class="title">{{index+1}}.{{item.name}} <span
                             class="cost">${{item.unitPrice.toLocaleString()}}</span></div>
                     <div class="mid">
@@ -46,6 +46,7 @@
                         <button  data-close class="del" @click=" setQuantity(index,'delete')">X</button>
                     </div>
                 </div>
+                 <span v-else>尚未選擇漢堡</span>
             </div>
 
 
