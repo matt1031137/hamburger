@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/favicon-32x32.png">
+    <meta name="twitter:image"
+        content="https://ik.imagekit.io/qsqeqoe68/tr:w-1000,h-713/%E3%81%8F%E3%82%8A%E6%8A%9C%E3%81%8D.png">
+    <meta name="description" content="只是練習排版的網站，沒有真的賣漢堡。">
+    <title>美味漢堡店 || Matt</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- 布景 -->
+        <div id="noiseCover">
+        </div>
+        <div id="bottom-line" :class="isEnd ? 'isEnd': ''">
+            <p v-show="isEnd">Copyright ⓒ2025 Matt's B-Burger</p>
+        </div>
+
+        <!-- 購物車 -->
+        <div class="cart" :class="isOpen ?'active':''" data-close>
+            <p>Brand</p>
+            <img v-if="cartContent.brand != ''" class="cart-logo" :src="cartContent.brand" alt="">
+            <span v-else>尚未選擇</span>
+            <p>Item</p>
+            <div class="maxHeight">
+                <div class="cart-item" v-for="(item,index) in cartContent.items">
+                    <div class="title">{{index+1}}.{{item.name}} <span
+                            class="cost">${{item.unitPrice.toLocaleString()}}</span></div>
+                    <div class="mid">
+                        <img :src="item.img" alt="">
+                        <div class="quantity-btns">
+                            <div class="subtotal">小計:${{(item.quantity*item.unitPrice).toLocaleString()}}</div>
+                            <div class="set">
+                                <button class="minus" @click=" setQuantity(index,'minus')">－</button>
+                                <span class="quantity">{{item.quantity}}</span>
+                                <button class="plus" @click=" setQuantity(index,'plus')">＋</button>
+                            </div>
+                        </div>
+                        <button  data-close class="del" @click=" setQuantity(index,'delete')">X</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="cart-item">
+                <div class="total"><span>合計:{{total.toLocaleString()}}元</span><button class="send"
+                        @click="sendCart">結帳</button></div>
+
+            </div>
+        </div>
+
+        <!-- 選單按鈕 -->
+        <div class="menu" :class="isOpen ?'active':''" @click="setIsOpen" data-close>
+            <span class="notify">{{totalQuantity}}</span>
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+
+        <section class="sec1">
+            <header>
+                <div class="header-left">
+                    <img class="header-logo" src="/images/logo.png" alt="B-Burger" title="B-Burger">
+                    <p>「漢堡的意義在於某種渴望牛肉的共同需求，配上香氣、調味、柔軟和多汁，以廉價且容易取得的方式，在一塊不起眼的肉餅之中蘊藏著肉質、牛肉以及鮮美多汁的油汁。」</p>
+                </div>
+            </header>
+
+            <div id="slogan">
+                <p class="slogan1">新鮮的<span class="green">蔬菜</span>與<span class="green">肉</span></p>
+                <p class="slogan2">搭配<span>"秘傳"</span><span class="sauce">醬汁</span></p>
+                <p><span class="bite">大口咬下</span></p>
+            </div>
+
+            <div id="hamburger">
+                <img src="https://ik.imagekit.io/qsqeqoe68/tr:w-1000,h-713/%E3%81%8F%E3%82%8A%E6%8A%9C%E3%81%8D.png"
+                    alt="超好吃漢堡" title="超好吃漢堡">
+            </div>
+
+
+
+        </section>
+
+
+        <section class="sec2">
+
+            <h2 class="subTitle">今天我想來點...</h2>
+
+            <div class="slider" data-aos="fade-up" style="
+            --width: 100px;
+            --height: 150px;
+            --quantity: 11;
+            --time:10s;
+        ">
+                <div class="list first">
+                    <div data-close class="item big" style="--position: 1"
+                    :class="cartContent.brand == '/images/logos/01-Mcdonald.png'?'selected':''"
+                        @click="setBrand('/images/logos/01-Mcdonald.png',$event)">
+                        <img src="/images/logos/01-Mcdonald.png" alt="Mcdonald" title="Mcdonald">
+                    </div>
+                    <div data-close class="item" style="--position: 2"
+                     :class="cartContent.brand == '/images/logos/02-KFC.png'?'selected':''"
+                        @click="setBrand('/images/logos/02-KFC.png',$event)">
+                        <img src="/images/logos/02-KFC.png" alt="KFC" title="KFC">
+                    </div>
+                    <div data-close class="item" style="--position: 3"
+                    :class="cartContent.brand == '/images/logos/03-BurgerKing.png'?'selected':''"
+                        @click="setBrand('/images/logos/03-BurgerKing.png',$event)"><img
+                            src="/images/logos/03-BurgerKing.png" alt="BurgerKing" title="BurgerKing"></div>
+                    <div data-close class="item" style="--position: 4"
+                      :class="cartContent.brand == '/images/logos/04-Wendys.png'?'selected':''"
+                        @click="setBrand('/images/logos/04-Wendys.png',$event)">
+                        <img src="/images/logos/04-Wendys.png" alt="Wendy's" title="Wendy's">
+                    </div>
+                    <div data-close class="item" style="--position: 5"
+                       :class="cartContent.brand == '/images/logos/05-BurgerJoint.png'?'selected':''"
+                        @click="setBrand('/images/logos/05-BurgerJoint.png',$event)"><img
+                            src="/images/logos/05-BurgerJoint.png" alt="BurgerJoint" title="BurgerJoint"></div>
+                    <div data-close class="item" style="--position: 6"
+                    :class="cartContent.brand == '/images/logos/06-FIVE_GUYS.png'?'selected':''"
+                        @click="setBrand('/images/logos/06-FIVE_GUYS.png',$event)"><img
+                            src="/images/logos/06-FIVE_GUYS.png" alt="FIVE_GUYS" title="FIVE_GUYS"></div>
+                    <div data-close class="item" style="--position: 7"
+                     :class="cartContent.brand == '/images/logos/07-InAndOut.png'?'selected':''"
+                        @click="setBrand('/images/logos/07-InAndOut.png',$event)"><img
+                            src="/images/logos/07-InAndOut.png" alt="In-N-Out" title="In-N-Out"></div>
+                    <div data-close class="item" style="--position: 8"
+                     :class="cartContent.brand == '/images/logos/08-cheeseburger-in-paradise.png'?'selected':''"
+                        @click="setBrand('/images/logos/08-cheeseburger-in-paradise.png',$event)"><img
+                            src="/images/logos/08-cheeseburger-in-paradise.png" alt="cheeseburger-in-paradise"
+                            title="cheeseburger-in-paradise"></div>
+                    <div data-close class="item" style="--position: 9"
+                      :class="cartContent.brand == '/images/logos/09-Shake Shack.png'?'selected':''"
+                        @click="setBrand('/images/logos/09-Shake Shack.png',$event)"><img
+                            src="/images/logos/09-Shake Shack.png" alt="Shake Shack" title="Shake_Shack"></div>
+                    <div data-close class="item" style="--position: 10"
+                     :class="cartContent.brand == '/images/logos/10-Smashburger.png'?'selected':''"
+                        @click="setBrand('/images/logos/10-Smashburger.png',$event)"><img
+                            src="/images/logos/10-Smashburger.png" alt="Smashburger" title="Smashburger"></div>
+                    <div data-close class="item" style="--position: 11"
+                      :class="cartContent.brand == '/images/logos/11-The_Habit_Burger_Grill.png'?'selected':''"
+                        @click="setBrand('/images/logos/11-The_Habit_Burger_Grill.png',$event)"><img
+                            src="/images/logos/11-The_Habit_Burger_Grill.png" alt="The_Habit_Burger_Grill"
+                            title="SmashburgerThe_Habit_Burger_Grill"></div>
+                </div>
+            </div>
+
+            <div class="slider" data-aos="fade-up" reverse="true" style="
+            --quantity: 7;
+              --time:20s;
+        ">
+                <div class="list">
+                    <div data-close class="item" style="--position: 1"
+                        @click="addCart({name:'塔塔醬漢堡',unitPrice:120,img:'/images/slides/slides-01.png'})">
+                        <img src="/images/slides/slides-01.png" alt="Mcdonald" title="Mcdonald">
+                        <div class="title">塔塔醬漢堡 <span class="cost">$120</span></div>
+                    </div>
+                    <div data-close class="item" style="--position: 2"
+                        @click="addCart({name:'香脆培根漢堡',unitPrice:160,img:'/images/slides/slides-02.png'})"><img
+                            src="/images/slides/slides-02.png" alt="food from BurgerJoint"
+                            title="food from BurgerJoint">
+                        <div class="title">香脆培根漢堡 <span class="cost">$160</span></div>
+                    </div>
+                    <div data-close class="item" style="--position: 3"
+                        @click="addCart({name:'煙燻鮭魚漢堡',unitPrice:180,img:'/images/slides/slides-03.png'})"><img
+                            src="/images/slides/slides-03.png" alt="food from BurgerJoint"
+                            title="food from BurgerJoint">
+                        <div class="title">煙燻鮭魚漢堡 <span class="cost">$180</span></div>
+                    </div>
+                    <div data-close class="item" style="--position: 4"
+                        @click="addCart({name:'剝皮辣椒漢堡',unitPrice:150,img:'/images/slides/slides-04.png'})"><img
+                            src="/images/slides/slides-04.png" alt="food from BurgerJoint"
+                            title="food from BurgerJoint">
+                        <div class="title">剝皮辣椒漢堡 <span class="cost">$150</span></div>
+                    </div>
+                    <div data-close class="item" style="--position: 5"
+                        @click="addCart({name:'L烤雞腿*2',unitPrice:99,img:'/images/slides/slides-05.png'})"><img
+                            src="/images/slides/slides-05.png" alt="food from BurgerJoint"
+                            title="food from BurgerJoint">
+                        <div class="title">L烤雞腿*2 <span class="cost">$99</span></div>
+                    </div>
+                    <div data-close class="item" style="--position: 6"
+                        @click="addCart({name:'鳳梨培根漢堡',unitPrice:10,img:'/images/slides/slides-06.png'})"><img
+                            src="/images/slides/slides-06.png" alt="food from BurgerJoint"
+                            title="food from BurgerJoint">
+                        <div class="title">鳳梨培根漢堡 <span class="cost">$10</span></div>
+                    </div>
+                    <div data-close class="item" style="--position: 7"
+                        @click="addCart({name:'龍捲風牛肉漢堡',unitPrice:299,img:'/images/slides/slides-07.png'})"><img
+                            src="/images/slides/slides-07.png" alt="food from BurgerJoint"
+                            title="food from BurgerJoint">
+                        <div class="title">龍捲風牛肉漢堡 <span class="cost">$299</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 布景 -->
+        <img class="bg-logo" src="/images/logo2.png" alt="">
+        <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="-122.276 92.8269 1443.046 231.9461">
+            <path fill="#78B80C"
+                d="M -122.276 188.687 L 71.925 136.137 C 119.927 120.137 297.441 89.129 402.579 93.19 C 507.717 97.251 730.64 205.935 825.356 219.368 C 920.072 232.801 961.851 208.125 1055.998 186.518 C 1137.235 167.874 1145.419 158.304 1243.985 126.869 C 1338.918 96.593 1224.77 132.773 1272.77 116.773 L 1320.77 100.773 L 1320.77 324.773 L -119.23 324.773 L -122.276 188.687 Z"
+                style="stroke-width: 1;" />
+        </svg>
+    </div>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script src="
+https://cdn.jsdelivr.net/npm/notification-js@1.1.1/build/notification.min.js
+"></script>
+    <link href="
+https://cdn.jsdelivr.net/npm/notification-js@1.1.1/build/notification.min.css
+" rel="stylesheet">
+    <script>
+        const { createApp, ref, onMounted, computed } = Vue
+
+
+        createApp({
+            setup() {
+
+
+                const test = () => {
+                    // notification.notify('success', '已加入購物車。', {
+                    // });
+                    notification.notify('warning', '已加入購物車。', {
+                    });
+
+                }
+
+                const isEnd = ref(false)
+                const updateScroll = () => {
+                    isEnd.value = false
+                    const height = window.scrollY;
+                    const end = document.querySelector('#app').scrollHeight;
+                    const clientHeight = document.querySelector('#app').clientHeight;
+
+                    // console.log(`已捲動: ${height}, 總高度: ${end}`);
+
+                    if (height + clientHeight + 360 >= end) {
+                        console.log("主視窗拉到底了！");
+                        isEnd.value = true
+                    }
+                };
+
+                const isOpen = ref(false)
+                const setIsOpen = () => {
+                    isOpen.value = !isOpen.value
+                }
+
+                const autoClose = (event) => {
+                    if (!event.target.closest('[data-close]')) {
+                        isOpen.value = false
+                    }
+                }
+
+
+                const cartContent = ref({
+                    brand: '',
+                    items: [
+                        // {name:'',
+                        //  unitPrice:0,
+                        //  quantity:0,
+                        // }
+                    ]
+                })
+
+                const setBrand = (img, event) => {
+                    cartContent.value.brand = img
+                    saveLocal()
+                    const target = event.target
+                    target.classList.add('active')
+                    setTimeout(() => { target.classList.remove('active') }, 1000)
+                      notification.notify('warning', `已選擇品牌` 
+                        );
+                }
+
+                const addCart = (product) => {
+                    const items = cartContent.value.items
+                    if (items.length == 0) {
+                        items.push({ ...product, quantity: 1 })
+                        console.log(items)
+                        console.log('總金額：', total.value)
+                        notification.notify('warning', '已加入購物車。');
+                        saveLocal()
+                        return
+                    }
+
+                    let isDouble = false
+
+                    items.forEach((item) => {
+                        if (item.name == product.name) {
+                            item.quantity = item.quantity + 1
+                            isDouble = true
+                        }
+                    })
+
+                    if (!isDouble) {
+                        notification.notify('warning', '已加入購物車。', {
+                        });
+                        items.push({ ...product, quantity: 1 })
+                        isDouble = false
+                    }
+
+                    saveLocal()
+                    console.log(items)
+                    console.log('總金額：', total.value)
+
+                }
+
+                const total = computed(() => {
+                    const items = cartContent.value.items
+                    if (items.length == 0) {
+                        return 0
+                    } else {
+                        return items.reduce((acc, curr) => acc + curr.unitPrice * curr.quantity, 0)
+                    }
+                })
+
+                const totalQuantity = computed(() => {
+                    const items = cartContent.value.items
+                    if (items.length == 0) {
+                        return 0
+                    } else {
+                        return items.reduce((acc, curr) => acc + curr.quantity, 0)
+                    }
+                })
+
+                const setQuantity = (index, move) => {
+                    const items = cartContent.value.items
+                    if (move == 'plus') {
+                        items[index].quantity = items[index].quantity + 1
+                        saveLocal()
+                        return
+                    }
+
+                    if (move == 'minus' && items[index].quantity != 1) {
+                        items[index].quantity = items[index].quantity - 1
+                        saveLocal()
+                        return
+                    }
+
+
+                    if (move == 'delete') {
+                        items.splice(index, 1)
+                        notification.notify('error', '已刪除。', {
+                        });
+                        saveLocal()
+                        return
+                    }
+
+                }
+
+                const sendCart = () => {
+                    if (cartContent.value.brand == '') {
+                        notification.notify('error', '請選擇品牌！', {
+                        });
+                        return
+                    }
+
+                    if (cartContent.value.items.length == 0) {
+                        notification.notify('error', '你還沒選擇任何餐點！', {
+                        });
+                        return
+                    }
+                    cartContent.value = {
+                        brand: '',
+                        items: []
+                    }
+                    notification.notify('success', '已收到訂單，漢堡馬上送到家(並沒有)。', {
+                    });
+                    saveLocal()
+                    isOpen.value = false
+
+                }
+
+
+                onMounted(() => {
+                    AOS.init();
+                    window.addEventListener('scroll', updateScroll)
+                    window.addEventListener('click', autoClose)
+                    const save = JSON.parse(localStorage.getItem("cart"));
+                    console.log(save)
+                    if (save) {
+                        cartContent.value = save
+                    }
+                })
+
+                const saveLocal = () => {
+                    localStorage.setItem("cart", JSON.stringify(cartContent.value));
+                }
+
+                return {
+                    isEnd,
+                    test,
+                    isOpen,
+                    setIsOpen,
+                    cartContent,
+                    addCart,
+                    total,
+                    totalQuantity,
+                    setBrand,
+                    setQuantity,
+                    sendCart
+
+                }
+            }
+        }).mount('#app')
+
+
+
+    </script>
+</body>
+
+</html>
