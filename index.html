@@ -100,7 +100,7 @@
             --time:10s;
         ">
                 <div class="list first">
-                    <div data-close class="item big" style="--position: 1"
+                    <div data-close class="item" style="--position: 1"
                     :class="cartContent.brand == '/images/logos/01-Mcdonald.png'?'selected':''"
                         @click="setBrand('/images/logos/01-Mcdonald.png',$event)">
                         <img src="/images/logos/01-Mcdonald.png" alt="Mcdonald" title="Mcdonald">
@@ -279,8 +279,8 @@ https://cdn.jsdelivr.net/npm/notification-js@1.1.1/build/notification.min.css
                     cartContent.value.brand = img
                     saveLocal()
                     const target = event.target
-                    target.classList.add('active')
-                    setTimeout(() => { target.classList.remove('active') }, 1000)
+                    // target.classList.add('active')
+                    // setTimeout(() => { target.classList.remove('active') }, 1000)
                       notification.notify('warning', `已選擇品牌` 
                         );
                 }
