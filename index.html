@@ -158,45 +158,52 @@
         ">
                 <div class="list">
                     <div data-close class="item" style="--position: 1"
-                        @click="addCart({name:'塔塔醬漢堡',unitPrice:120,img:'/images/slides/slides-01.png'})">
+                        @click="addCart({id:0,name:'塔塔醬漢堡',unitPrice:120,img:'/images/slides/slides-01.png'})">
                         <img src="/images/slides/slides-01.png" alt="Mcdonald" title="Mcdonald">
                         <div class="title">塔塔醬漢堡 <span class="cost">$120</span></div>
+                        <div class="item-quantity">{{allQuantity[0]}}個</div>
                     </div>
                     <div data-close class="item" style="--position: 2"
-                        @click="addCart({name:'香脆培根漢堡',unitPrice:160,img:'/images/slides/slides-02.png'})"><img
+                        @click="addCart({id:1,name:'香脆培根漢堡',unitPrice:160,img:'/images/slides/slides-02.png'})"><img
                             src="/images/slides/slides-02.png" alt="food from BurgerJoint"
                             title="food from BurgerJoint">
                         <div class="title">香脆培根漢堡 <span class="cost">$160</span></div>
+                           <div class="item-quantity">{{allQuantity[1]}}個</div>
                     </div>
                     <div data-close class="item" style="--position: 3"
-                        @click="addCart({name:'煙燻鮭魚漢堡',unitPrice:180,img:'/images/slides/slides-03.png'})"><img
+                        @click="addCart({id:2,name:'煙燻鮭魚漢堡',unitPrice:180,img:'/images/slides/slides-03.png'})"><img
                             src="/images/slides/slides-03.png" alt="food from BurgerJoint"
                             title="food from BurgerJoint">
                         <div class="title">煙燻鮭魚漢堡 <span class="cost">$180</span></div>
+                           <div class="item-quantity">{{allQuantity[2]}}個</div>
                     </div>
                     <div data-close class="item" style="--position: 4"
-                        @click="addCart({name:'剝皮辣椒漢堡',unitPrice:150,img:'/images/slides/slides-04.png'})"><img
+                        @click="addCart({id:3,name:'剝皮辣椒漢堡',unitPrice:150,img:'/images/slides/slides-04.png'})"><img
                             src="/images/slides/slides-04.png" alt="food from BurgerJoint"
                             title="food from BurgerJoint">
                         <div class="title">剝皮辣椒漢堡 <span class="cost">$150</span></div>
+                           <div class="item-quantity">{{allQuantity[3]}}個</div>
                     </div>
                     <div data-close class="item" style="--position: 5"
-                        @click="addCart({name:'L烤雞腿*2',unitPrice:99,img:'/images/slides/slides-05.png'})"><img
+                        @click="addCart({id:4,name:'L烤雞腿*2',unitPrice:99,img:'/images/slides/slides-05.png'})"><img
                             src="/images/slides/slides-05.png" alt="food from BurgerJoint"
                             title="food from BurgerJoint">
                         <div class="title">L烤雞腿*2 <span class="cost">$99</span></div>
+                           <div class="item-quantity">{{allQuantity[4]}}個</div>
                     </div>
                     <div data-close class="item" style="--position: 6"
-                        @click="addCart({name:'鳳梨培根漢堡',unitPrice:10,img:'/images/slides/slides-06.png'})"><img
+                        @click="addCart({id:5,name:'鳳梨培根漢堡',unitPrice:10,img:'/images/slides/slides-06.png'})"><img
                             src="/images/slides/slides-06.png" alt="food from BurgerJoint"
                             title="food from BurgerJoint">
                         <div class="title">鳳梨培根漢堡 <span class="cost">$10</span></div>
+                           <div class="item-quantity">{{allQuantity[5]}}個</div>
                     </div>
                     <div data-close class="item" style="--position: 7"
-                        @click="addCart({name:'龍捲風牛肉漢堡',unitPrice:299,img:'/images/slides/slides-07.png'})"><img
+                        @click="addCart({id:6,name:'龍捲風牛肉漢堡',unitPrice:299,img:'/images/slides/slides-07.png'})"><img
                             src="/images/slides/slides-07.png" alt="food from BurgerJoint"
                             title="food from BurgerJoint">
                         <div class="title">龍捲風牛肉漢堡 <span class="cost">$299</span></div>
+                           <div class="item-quantity">{{allQuantity[6]}}個</div>
                     </div>
                 </div>
             </div>
@@ -264,6 +271,15 @@ https://cdn.jsdelivr.net/npm/notification-js@1.1.1/build/notification.min.css
                     }
                 }
 
+                // 處理每個漢堡的數量
+                const allQuantity = computed(()=>{
+                    let result = Array(7).fill(0)
+                    cartContent.value.items.forEach((item)=>{
+                         result[item.id] = item.quantity
+                    })
+                    return result
+                })
+
 
                 const cartContent = ref({
                     brand: '',
@@ -313,8 +329,9 @@ https://cdn.jsdelivr.net/npm/notification-js@1.1.1/build/notification.min.css
                     }
 
                     saveLocal()
-                    console.log(items)
-                    console.log('總金額：', total.value)
+                    // console.log(items)
+                    // console.log('總金額：', total.value)
+                    // console.log('全部數量:',allQuantity.value)
 
                 }
 
@@ -411,7 +428,8 @@ https://cdn.jsdelivr.net/npm/notification-js@1.1.1/build/notification.min.css
                     totalQuantity,
                     setBrand,
                     setQuantity,
-                    sendCart
+                    sendCart,
+                    allQuantity
 
                 }
             }

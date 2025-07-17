@@ -565,11 +565,25 @@ body #app section.sec2 .slider[reverse=true] .list .item div.title {
   transform: translateY(-100%);
   display: block;
   transition: transform 0.5s ease-in-out;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 body #app section.sec2 .slider[reverse=true] .list .item div.title span.cost {
   color: var(--Text-Color);
   font-size: 2rem;
   font-family: "seto";
+}
+body #app section.sec2 .slider[reverse=true] .list .item div.item-quantity {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  font-size: 3rem;
+  font-family: "seto";
+  font-weight: 500;
+  color: var(--Main-Color);
+  color: white;
+  text-shadow: 2px 2px 20px rgb(78, 78, 78);
 }
 body #app section.sec2 .slider[reverse=true] .list .item img {
   height: 100%;
